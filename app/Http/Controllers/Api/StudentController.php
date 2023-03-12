@@ -12,17 +12,16 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        if($students->count() >0)
-        {
+        if ($students->count() > 0) {
             return response()->json([
-            'status' => 200,
-            'students' => $students
+                'status' => 200,
+                'students' => $students
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'status' => 404,
                 'message' => 'no records founds'
-                ], 404);
+            ], 404);
         }
 
     }
@@ -34,27 +33,26 @@ class StudentController extends Controller
             'email' => 'required|email|max:191',
             'phone' => 'required|digits:10',
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages()
             ], 422);
-        }else {
+        } else {
             $student = Student::create([
                 'name' => $request->name,
                 'course' => $request->course,
                 'email' => $request->email,
                 'phone' => $request->phone,
             ]);
-            if($student){
+            if ($student) {
                 return response()->json([
-                    'status'=> 200,
+                    'status' => 200,
                     'message' => 'student created successfully'
                 ], 200);
-            }else {
+            } else {
                 return response()->json([
-                    'status'=> 500,
+                    'status' => 500,
                     'message' => 'something went wrong!'
                 ], 500);
             }
@@ -64,16 +62,29 @@ class StudentController extends Controller
     public function show($id)
     {
         $student = Student::find($id);
-        if($student)
-        {
+        if ($student) {
             return response()->json([
-                'status'=> 200,
+                'status' => 200,
                 'student' => $student
             ], 200);
-        }else
-        {
+        } else {
             return response()->json([
-                'status'=> 404,
+                'status' => 404,
+                'message' => 'no student found!'
+            ], 404);
+        }
+    }
+    public function edit($id)
+    {
+        $student = Student::find($id);
+        if ($student) {
+            return response()->json([
+                'status' => 200,
+                'student' => $student
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
                 'message' => 'no student found!'
             ], 404);
         }
@@ -87,15 +98,14 @@ class StudentController extends Controller
             'email' => 'required|email|max:191',
             'phone' => 'required|digits:10',
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages()
             ], 422);
-        }else {
+        } else {
             $student = Student::find($id);
-            if($student){
+            if ($student) {
                 $student->update([
                     'name' => $request->name,
                     'course' => $request->course,
@@ -103,12 +113,12 @@ class StudentController extends Controller
                     'phone' => $request->phone,
                 ]);
                 return response()->json([
-                    'status'=> 200,
+                    'status' => 200,
                     'message' => 'student update successfully'
                 ], 200);
-            }else {
+            } else {
                 return response()->json([
-                    'status'=> 404,
+                    'status' => 404,
                     'message' => 'no student found!'
                 ], 404);
             }
@@ -117,16 +127,15 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = Student::find($id);
-        if($student)
-        {
+        if ($student) {
             $student->delete();
             return response()->json([
-                'status'=> 200,
+                'status' => 200,
                 'message' => 'student deleted successfully'
             ], 200);
-        }else{
+        } else {
             return response()->json([
-                'status'=> 404,
+                'status' => 404,
                 'message' => 'no student found!'
             ], 404);
         }
